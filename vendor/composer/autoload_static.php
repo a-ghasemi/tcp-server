@@ -6,7 +6,19 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit84b0e9c958fbd0f176d2cb717286e168
 {
+    public static $files = array (
+        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'p' => 
+        array (
+            'phpseclib\\' => 10,
+        ),
+        'P' => 
+        array (
+            'PhpAmqpLib\\' => 11,
+        ),
         'A' => 
         array (
             'App\\' => 4,
@@ -14,17 +26,18 @@ class ComposerStaticInit84b0e9c958fbd0f176d2cb717286e168
     );
 
     public static $prefixDirsPsr4 = array (
+        'phpseclib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
+        'PhpAmqpLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-amqplib/php-amqplib/PhpAmqpLib',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
         ),
-    );
-
-    public static $classMap = array (
-        'App\\Logger' => __DIR__ . '/../..' . '/app/Logger.php',
-        'App\\Main' => __DIR__ . '/../..' . '/app/Main.php',
-        'App\\Parser' => __DIR__ . '/../..' . '/app/Parser.php',
-        'App\\TcpServer' => __DIR__ . '/../..' . '/app/TcpServer.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -32,7 +45,6 @@ class ComposerStaticInit84b0e9c958fbd0f176d2cb717286e168
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit84b0e9c958fbd0f176d2cb717286e168::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit84b0e9c958fbd0f176d2cb717286e168::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit84b0e9c958fbd0f176d2cb717286e168::$classMap;
 
         }, null, ClassLoader::class);
     }

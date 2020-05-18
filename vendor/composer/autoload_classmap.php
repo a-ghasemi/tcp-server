@@ -6,8 +6,4 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'App\\Logger' => $baseDir . '/app/Logger.php',
-    'App\\Main' => $baseDir . '/app/Main.php',
-    'App\\Parser' => $baseDir . '/app/Parser.php',
-    'App\\TcpServer' => $baseDir . '/app/TcpServer.php',
 );
