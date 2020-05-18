@@ -3,7 +3,7 @@
 namespace App;
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use PhpAmqpLib\Message\AMQPMessage;
+use PhpAmqpLib\Exchange\AMQPExchangeType;
 
 
 class Consumer
@@ -39,7 +39,10 @@ class Consumer
     {
         $this->logger = new Logger($this->logfile);
 
-        $this->channel->basic_consume(_RABBIT_QUEUE_, _RABBIT_CONSUMER_TAG_, false, false, false, false, '$this->process_message');
+        $callback = function($req){
+            $this->process_message($req);
+        };
+        $this->channel->basic_consume(_RABBIT_QUEUE_, _RABBIT_CONSUMER_TAG_, false, false, false, false, $callback);
 
         while ($this->channel ->is_consuming()) {
             $this->channel->wait();
@@ -53,6 +56,6 @@ class Consumer
         $time = microtime(true) - $time;
         $this->logger->log($parser->rendered_results());
 
-        echo "Incoming data from \"$this->port\" Parsed & Logged Successfully.\n";
+        echo "Incoming data Parsed & Logged Successfully.\n";
     }
 }
