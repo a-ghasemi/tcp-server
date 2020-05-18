@@ -5,9 +5,8 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 
-class Main
+class Producer
 {
-    private $logfile;
     private $ip;
     private $port;
 
@@ -21,18 +20,18 @@ class Main
 
         $this->ip = $ip;
         $this->port = $port;
-        $this->logfile = _RESULT_ . "/log.$port.csv";
 
         $this->connection = new AMQPStreamConnection(_RABBIT_HOST_, _RABBIT_PORT_, _RABBIT_USER_, _RABBIT_PASS_);
         $this->channel = $this->connection->channel();
         $this->channel->queue_declare(_RABBIT_QUEUE_, false, false, false, false);
+        $this->channel->exchange_declare(_RABBIT_EXCHANGE_, AMQPExchangeType::DIRECT, false, true, false);
+        $this->channel->queue_bind(_RABBIT_QUEUE_, _RABBIT_EXCHANGE_);
     }
 
     public function main(){
         $tcp_server = new TcpServer($this->ip, $this->port);
         $tcp_server->start();
 
-        $logger = new Logger($this->logfile);
         while($tcp_server->status == 'running'){
             $data = $tcp_server->read();
 
@@ -44,14 +43,6 @@ class Main
                 ]
             );
             $this->channel->basic_publish($message,_RABBIT_EXCHANGE_);
-
-// Move to consumer-side
-//            $parser = new Parser($data);
-//            $time = microtime(true);
-//            $parser->process();
-//            $time = microtime(true) - $time;
-//            $logger->log($parser->rendered_results());
-
 
             echo "Incoming data from \"$this->port\" Messaged Successfully.\n";
         }
