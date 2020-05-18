@@ -22,6 +22,12 @@ class TcpServer
         $this->error_engine = new ErrorThrower();
     }
 
+    public function __destruct()
+    {
+        if($this->spawn) socket_close($this->spawn);
+        if($this->socket) socket_close($this->socket);
+    }
+
     public function start(){
         $this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         $this->error_engine->error(!$this->socket, "Could not create socket ".socket_strerror(socket_last_error()));
